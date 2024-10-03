@@ -1,0 +1,26 @@
+#include <stdio.h>
+int max(int a, int b) {
+    return (a > b) ? a : b;
+}
+int rob_range(int* nums, int start, int end) {
+    int rob = 0, not_rob = 0;
+    for (int i = start; i < end; i++) {
+        int current = nums[i];
+        int new_rob = not_rob + current;
+        not_rob = max(rob, not_rob);
+        rob = new_rob;
+    }
+    return max(rob, not_rob);
+}
+int rob(int* nums, int numsSize) {
+    if (numsSize == 1) {
+        return nums[0];
+    }
+    return max(rob_range(nums, 0, numsSize - 1), rob_range(nums, 1, numsSize));
+}
+int main() {
+    int nums[] = {2, 3, 2};
+    int numsSize = sizeof(nums) / sizeof(nums[0]);
+    printf("The maximum money you can rob without alerting the police is: %d\n", rob(nums, numsSize));
+    return 0;
+}
