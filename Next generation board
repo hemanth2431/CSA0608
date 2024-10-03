@@ -1,0 +1,60 @@
+#include <stdio.h>
+int count_live_neighbors(int board[4][4], int m, int n, int i, int j) {
+    int count = 0;
+    for (int x = -1; x <= 1; x++) {
+        for (int y = -1; y <= 1; y++) {
+            if (!(x == 0 && y == 0)) {
+                int ni = i + x;
+                int nj = j + y;
+                if (ni >= 0 && ni < m && nj >= 0 && nj < n) {
+                    count += board[ni][nj] == 1 || board[ni][nj] == 2;
+                }
+            }
+        }
+    }
+    return count;
+}
+void game_of_life(int board[4][4], int m, int n) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            int live_neighbors = count_live_neighbors(board, m, n, i, j);
+            if (board[i][j] == 1 && (live_neighbors < 2 || live_neighbors > 3)) {
+                board[i][j] = 2;
+            } else if (board[i][j] == 0 && live_neighbors == 3) {
+                board[i][j] = -1;
+            }
+        }
+    }
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            if (board[i][j] == 2) {
+                board[i][j] = 0;
+            } else if (board[i][j] == -1) {
+                board[i][j] = 1;
+            }
+        }
+    }
+}
+void print_board(int board[4][4], int m, int n) {
+    for (int i = 0; i < m; i++) {
+        for (int j = 0; j < n; j++) {
+            printf("%d ", board[i][j]);
+        }
+        printf("\n");
+    }
+}
+int main() {
+    int m = 4, n = 4;
+    int board[4][4] = {
+        {0, 1, 0, 0},
+        {0, 0, 1, 0},
+        {1, 1, 1, 0},
+        {0, 0, 0, 0}
+    };
+    printf("Original board:\n");
+    print_board(board, m, n);
+    game_of_life(board, m, n);
+    printf("Next generation board:\n");
+    print_board(board, m, n);
+    return 0;
+}
