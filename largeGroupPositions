@@ -1,0 +1,20 @@
+#include <stdio.h>
+#include <string.h>
+void largeGroupPositions(char* s) {
+    int n = strlen(s);
+    int start = 0; 
+    for (int i = 1; i <= n; i++) {
+        if (i == n || s[i] != s[start]) {
+            if (i - start >= 3) {
+                printf("[%d,%d] ", start, i - 1);
+            }
+            start = i;
+        }
+    }
+}
+int main() {
+    char s[] = "abbxxxxzzy";
+    printf("Large groups: ");
+    largeGroupPositions(s);
+    return 0;
+}
